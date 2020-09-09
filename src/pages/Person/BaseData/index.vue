@@ -66,7 +66,6 @@
         </el-form>
       </div>
       <div class="base-data_avatar">
-        <span>头像设置</span>
         <!-- <el-upload
           class="base-data_avatar-uploader"
           action="https://jsonplaceholder.typicode.com/posts/"
@@ -133,7 +132,7 @@ export default {
       preImageUrl: "",
       seen: false,
       form: {
-        nickname: "111",
+        nickname: "",
         name: "",
         phone: "",
         email: "",
@@ -273,17 +272,18 @@ export default {
   &_form {
     float: left;
     width: 40%;
-    margin-left: 15%;
+    margin-left: 10%;
     margin-top: 5%;
     text-align: center;
-    margin-bottom: 3%;
+
   }
 
   &_avatar {
     float: right;
-    margin-top: 7%;
+    margin-top: 8%;
     margin-right: 20%;
     text-align: center;
+    
   }
   &_avatar-uploader /deep/ .el-upload {
     margin-top: 10px;
@@ -299,14 +299,15 @@ export default {
   &_avatar-uploader-icon {
     font-size: 28px;
     color: #8c939d;
-    width: 178px;
-    height: 178px;
-    line-height: 178px;
+    width: 200px;
+    height: 200px;
+    line-height: 200px;
     text-align: center;
   }
   &_img-avatar {
-    width: 178px;
-    height: 178px;
+    border: 1px solid;
+    width: 200px;
+    height: 200px;
     display: block;
   }
 }

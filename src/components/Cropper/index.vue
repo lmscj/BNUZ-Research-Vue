@@ -1,6 +1,6 @@
 <template>
   <div class="footerBtn">
-    <el-button @click="dialogVisible=true">上传头像</el-button>
+    <el-button @click="dialogVisible=true" icon="el-icon-camera">上传头像</el-button>
     <!-- 弹出层-裁剪 -->
     <el-dialog
       title="编辑头像"

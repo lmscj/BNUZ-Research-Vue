@@ -14,7 +14,7 @@
           ref="form"
           :model="form"
           :rules="rules"
-          label-width="80px"
+          label-width="100px"
         >
           <el-form-item
             label="原密码"

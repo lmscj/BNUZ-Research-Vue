@@ -6,63 +6,55 @@
     >
       <el-breadcrumb-item :to="{ path: '/person' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>账号中心</el-breadcrumb-item>
-      <el-breadcrumb-item>修改手机</el-breadcrumb-item>
+      <el-breadcrumb-item>修改手机号</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="reset-phone_wrap">
       <div class="reset-phone_form">
         <el-form
           label-width="100px"
-          
           :model="form"
           ref="form"
           :rules="rules"
         >
-        <el-form-item
-            label="当前手机号码"
+          <el-form-item
+            label="原手机号码"
+            prop="current_phone"
           >
-            <el-label
+            <el-input
               v-model="form.current_phone"
-              style="margin-bottom:20px;float:left"
-            >152********15</el-label>
-            
+              style="width:45% ; margin-bottom : 20px"
+              disabled
+            ></el-input>
           </el-form-item>
           <el-form-item
-            label="手机号码"
+            label="新手机号码"
             prop="phone"
           >
             <el-input
               v-model="form.phone"
-              style="margin-bottom:20px;"
+              style="width:45% ; margin-bottom : 20px"
             ></el-input>
             
           </el-form-item>
-          
- 
           <el-form-item
             label="短信验证码"
             prop="code"
           >
             <el-input
               v-model="form.code"
-              style="margin-bottom:20px"
+              style="width:45% ; margin-bottom : 20px"
             ><el-button slot="append" type="primary">点击获取验证码</el-button></el-input>
           </el-form-item>
-          <el-form-item
-            label="当前密码"
-            prop="password"
-          >
-            <el-input
-              v-model="form.passwrod"
-              style="margin-bottom:20px;"
-            ></el-input>
-          </el-form-item>
-          <el-form-item>
+          <el-form-item style="margin-left:8%">
             <el-button
-              style="width:100px "
+              style="width : 100px"
               type="primary"
               @click="onSubmit"
             >提交</el-button>
-
+            <el-button
+              style="margin-left:20px ; width : 100px"
+              @click="handleCancel()"
+            >取消</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -114,7 +106,6 @@ export default {
 
 
   methods: {
-
     async handleCancel(){
       window.location.reload();
     },
@@ -138,50 +129,17 @@ export default {
     padding-bottom: 13px;
     background: #fff;
   }
-  &_container {
-  }
   &_wrap {
     margin-top: 20px;
     padding: 10px;
+    background: #fff;
+  }
+  &_form {
+    margin-top: 10%;
+    margin-left: 25%;
+    margin-bottom: 10%;
   }
 
-  &_form {
-    float: left;
-    width: 40%;
-    margin-left: 15%;
-    margin-top: 5%;
-    text-align: center;
-    margin-bottom: 3%;
-  }
-  &_avatar {
-    float: right;
-    margin-top: 7%;
-    margin-right: 20%;
-    text-align: center;
-  }
-  &_avatar-uploader /deep/ .el-upload {
-    margin-top: 10px;
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-  }
-  &_avatar-uploader /deep/ .el-upload:hover {
-    border-color: #409eff;
-  }
-  &_avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 178px;
-    height: 178px;
-    line-height: 178px;
-    text-align: center;
-  }
-  &_img-avatar {
-    width: 178px;
-    height: 178px;
-    display: block;
-  }
+  
 }
 </style>
