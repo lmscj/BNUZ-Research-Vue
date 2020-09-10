@@ -83,19 +83,6 @@ export default {
       course: 0,
       information: 0,
       chartList: [
-        {
-          dataType: "loginAnalyze",
-          title: "最近七天用户登录分析",
-          height: "350px",
-          chartType: "line",
-          xUnit: "天",
-          yUnit: "人数",
-          chartData: {
-            nameList: ["最近七天"],
-            xList: ["4/23", "4/24", "4/25", "4/26", "4/27", "4/28", "4/29"],
-            dataList: [[23, 46, 11, 55, 13, 12, 12]]
-          }
-        }
         // {
         //   title: '课程类型',
         //   height: '300px',
@@ -110,25 +97,6 @@ export default {
     };
   },
   methods: {
-    //getCharts () {
-    // userLoginAnalyzeApi({ days: 7 }).then(res => {
-    //   this.loading = false
-    //   if (res.success) {
-    //     const data = res.content
-    //     this.chartList.forEach(item => {
-    //       if (item.dataType === 'loginAnalyze') {
-    //         item.chartData = {
-    //           nameList: data.daysList,
-    //           xList: data.timeList,
-    //           dataList: data.dataList
-    //         }
-    //       }
-    //     })
-    //   }
-    // }).catch(() => {
-    //   this.loading = false
-    // })
-    //}
     async getCharts() {
       const {
         data: { total : institution }
@@ -155,11 +123,27 @@ export default {
         status: "1",
         me: "1"
       });
+      const {
+        data : {LoginAcount}
+      } = await this.$http.get("/api/LoginCount" , {
+      },);
+      const dates = LoginAcount.filter(item => item.date);
+      this.$set(this.chartList,0,{
+          dataType: "loginAnalyze",
+          title: "最近七天用户登录分析",
+          height: "350px",
+          chartType: "line",
+          xUnit: "天",
+          yUnit: "人数",
+          chartData: {
+            nameList: ["最近七天"],
+            xList: [dates[6].date,dates[5].date,dates[4].date,dates[3].date,dates[2].date,dates[1].date,dates[0].date],
+            dataList: [[dates[6].number,dates[5].number,dates[4].number,dates[3].number,dates[2].number,dates[1].number,dates[0].number,]]
+          }
+        })
       this.institution = institution
       this.course = course
       this.information = information
-      // const {data : {total : course}} = await this.$http.get('/api/institutions/enroll/list');
-      // const {data : {total : information}} = await this.$http.get('/api/institutions/enroll/list');
     },
     currentTime() {
       setInterval(this.getDate, 500);
@@ -200,7 +184,6 @@ export default {
   },
   beforeDestroy: function() {
     if (this.getDate) {
-      console.log("销毁定时器");
       clearInterval(this.getDate);
     }
   }

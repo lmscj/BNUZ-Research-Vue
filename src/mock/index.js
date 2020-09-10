@@ -1,11 +1,21 @@
 import Mock from 'mockjs'
-
+var dottedBase = + new Date();
 //系统管理员课程列表审核
 Mock.mock('/api/courses/examine','post',function(options){
     const o = JSON.parse(options.body)
     return o.id
 })
-
+const {values} = Mock.mock({
+    'values|7': [{
+      'number|100-1000': 1,
+      'date': function() {
+        dottedBase--;
+        var date = new Date((dottedBase -= 1000 * 3600 * 24));
+        var category= date.getMonth() + 1 + "-" + date.getDate();
+        return category;
+      }
+    }] 
+})
 
 var { LogList } = Mock.mock({
     'LogList|50-80' : [
@@ -54,6 +64,15 @@ Mock.mock(/\/api\/log\/delete/,'post',(options)=>{
     }   
 })
 
+Mock.mock(/\/api\/LoginCount/,'get',() => {
+    return {
+        status : 200,
+        message : "获取系统日志成功",
+        LoginAcount : values,
+        total : values.length,
+    }
+})
+
 Mock.mock(/\/api\/log\/list/,'get',(options)=>{
     const type = getQuery(options.url,'type')
     const name = getQuery(options.url,'name')
@@ -65,7 +84,7 @@ Mock.mock(/\/api\/log\/list/,'get',(options)=>{
         else{return true}
     })
 
-    console.log(mockList)
+    console.log(values)
     const start = (page - 1) * limit
     const end = page * limit
     const totalPage = Math.ceil(mockList.length / limit)
