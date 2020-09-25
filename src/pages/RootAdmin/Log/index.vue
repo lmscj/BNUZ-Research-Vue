@@ -26,13 +26,6 @@
             :key="item.key"
           ></el-option>
         </el-select>
-        <!-- <el-date-picker
-          class="width"
-          v-model="sch_date"
-          type="date"
-          placeholder="选择日期时间"
-          value-format="yyyy-MM-dd"
-        ></el-date-picker> -->
         <el-button type="primary" icon="el-icon-search" @click="handleSearchChange()"
           >搜索</el-button
         >
@@ -80,7 +73,6 @@
           </el-table-column>
           <el-table-column label="操作" width="100" align="center">
             <template slot-scope="scope">
-              <!-- <el-button size="mini" type="primary" @click="handleEditClick(scope.row.id)">编辑</el-button> -->
               <el-button size="mini" type="danger" @click="handleDeleteClick(scope.$index,scope.row.log_id)">删除</el-button>
             </template>
           </el-table-column>
@@ -99,42 +91,10 @@
         ></el-pagination>
       </div>
     </div>
-    <!-- <el-dialog title="创建用户" :visible.sync="isDialogShow" width="30%">
-      <el-form
-        ref="accountForm"
-        :model="accountForm"
-        label-position="left"
-        label-width="80px"
-        :rules="rules"
-        label-suffix=":"
-      >
-        <el-form-item label="用户名" prop="username">
-          <el-input v-model="accountForm.username" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="密码" prop="password">
-          <el-input v-model="accountForm.password" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="角色" prop="role">
-          <el-select v-model="accountForm.role" placeholder="请选择用户角色">
-            <el-option label="学生" value="1"></el-option>
-            <el-option label="家长" value="2"></el-option>
-            <el-option label="机构工作人员" value="4"></el-option>
-            <el-option label="机构管理员" value="8"></el-option>
-            <el-option label="系统管理员" value="99"></el-option>
-          </el-select>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="handleDialogClose">取 消</el-button>
-        <el-button type="primary" @click="handleDialogConfirm('accountForm')">确 定</el-button>
-      </div>
-    </el-dialog> -->
   </div>
 </template>
 
 <script>
-
-
 export default {
   name: "SystemLog",
   data() {
@@ -155,6 +115,7 @@ export default {
       name : '',
       type : '',
       source : '',
+      limit : "10",
       options: [
         { label: '用户登录', key: 1 },
         { label: '用户登出', key: 0 },
@@ -168,7 +129,7 @@ export default {
   methods: {
     async getLogList() {
       const {data} = await this.$http.get("/api/log/list",{
-            limit: "10",
+            limit: this.limit,
             page: this.currentPage + "",
             name : this.name,
             type : this.type
@@ -202,7 +163,6 @@ export default {
       this.isLoading = false;
     },
     async handleSearchChange(){
-      console.log(this.type)
       this.isLoading = true;
       await this.getLogList();
       this.isLoading = false;
@@ -226,16 +186,35 @@ export default {
     handleDialogClose() {
       this.isDialogShow = false;
     },
-    excelDow() {
+    async getExcel(){
+      const total = this.totalTagsCount
+      const {data} = await this.$http.get("/api/log/list",{
+            limit: total,
+            page: this.currentPage + "",
+            name : this.name,
+            type : this.type
+      })
+      const list = data.LogList;
+      return list
+    },
+    async excelDow() {
+      const list = await this.getExcel()
+      this.limit = "10"
       import('@/vendor/Export2Excel.js').then(moudle => {
         const tHeader = ['序号', '操作者','操作类型', '日志类型', '日志标题', 'IP地址', '操作时间']
         const filterVal = ['log_id', 'handle_name','role', 'log_type', 'log_title', 'ip', 'handle_time']
-        const list = this.currentTableData
+        // const list = this.getExcel()
+        // this.limit = "10"
+        list.forEach(item => {
+          item.role = this.generateRole(item.role);
+          item.log_type = this.generateType(item.log_type)
+        });  
         const data = this.formatJson(filterVal, list)
-        moudle.export_json_to_excel({
+        moudle
+        .export_json_to_excel({
           header: tHeader,
           data,
-          filename: this.filename === '' ? '系统日志' : this.filename,
+          filename: (this.name !== "" || this.type !== "" ) ? (this.generateType(this.type) + " " + this.name + "操作日志") : "系统日志",
           autoWidth: this.autoWidth,
           bookType: this.bookType
         }).catch(err => {

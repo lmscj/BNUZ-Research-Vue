@@ -200,6 +200,7 @@ export default {
       status: "",
       multipleSelection: [],
       type: "",
+      limit : "10",
       options: [
         { key: 1, label: "知识科普型" },
         { key: 2, label: "自然观赏型" },
@@ -252,7 +253,7 @@ export default {
       const {
         data: { courses, total }
       } = await this.$http.get("/api/courses/list", {
-        limit: "10",
+        limit: this.limit,
         page: this.currentPage + "",
         course_type: this.type,
         status: this.status,
@@ -316,7 +317,9 @@ export default {
           "travel_days",
           "start_time"
         ];
-
+        this.limit = this.totalTagsCount
+        this.getCourseList()
+        this.limit = "10"
         const list = this.currentTableData;
         list.forEach(item => {
           item.course_type = this.TypeOfCourse(item.course_type);
@@ -329,7 +332,7 @@ export default {
           .export_json_to_excel({
             header: tHeader,
             data,
-            filename: "机构统计",
+            filename: (this.status !== "" || this.type !== "") ? (this.type + "-" + this.status + "课程") : "全部课程",
             autoWidth: this.autoWidth,
             bookType: this.bookType
           })
