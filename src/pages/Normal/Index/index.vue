@@ -4,20 +4,18 @@
       <my-header />
     </el-header>
     <el-container>
-      <el-aside width="200px">
+      <el-aside width="201px">
         <sider-nav />
       </el-aside>
-      <el-container>
-        <el-main>
-          <router-view></router-view>
-        </el-main>
-      </el-container>
+      <el-main>
+        <router-view></router-view>
+      </el-main>
     </el-container>
   </el-container>
 </template>
 <script>
 import appHeader from '../../../components/header-component/index.vue';
-import SiderNav from "@/components/Person/SiderNav";
+import SiderNav from "@/components/Normal/SiderNav";
 export default {
   components: { MyHeader: appHeader,SiderNav },
   data() {
@@ -42,9 +40,11 @@ export default {
 
 .el-aside {
   left: 0;
+  background: #202329;
   overflow-x: hidden;
   height: calc(100vh - 60px);
-  color: #333;
+  height : 100%;
+  
   text-align: left;
   line-height: 200px;
 

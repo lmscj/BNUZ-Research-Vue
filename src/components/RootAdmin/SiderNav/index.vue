@@ -4,7 +4,8 @@
     class="sider-nav__container"
     :unique-opened="true"
     theme=dark
-    background-color="#F6F6F8"
+    text-color="#fff"
+    background-color="#202329"
     router
   >
     <el-submenu index="1">
@@ -79,6 +80,7 @@ export default {
 
 <style lang="scss" scoped>
 .el-menu {
+  height : 100%;
   border: 0 !important;
 }
 </style>
