@@ -22,6 +22,10 @@ import InformationsList from "../pages/infomations/List";
 import InformationDetail from "../pages/infomations/Detail";
 import http from "../utils/http"
 import { MessageBox } from 'element-ui';
+import GlimpseIndex from '@/pages/Glimpse/index';
+import Glimpse from '@/pages/Glimpse/glimpse';
+import Glimpse2 from '@/pages/Glimpse/glimpse2';
+import GlimpseDialog from '@/pages/Glimpse/glimpseDialog'
 Vue.use(VueRouter);
 
 const routes = [
@@ -50,6 +54,14 @@ const routes = [
                 path: 'informations/', component: CoursesIndex, children: [
                     { path: '', component: InformationsList, name: 'InformationList' },
                     { path: ':id', component: InformationDetail, name: 'InformationDetail' }
+                ]
+            },
+            {
+                path : 'glimpse/', component : GlimpseIndex , children: [
+                    {path : '', component : Glimpse , name: "Glimpse" },
+                    {path : 'test' , component : Glimpse2},
+                    {path: 'glimpse', component : GlimpseDialog}
+
                 ]
             }
         ]

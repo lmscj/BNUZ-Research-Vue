@@ -53,7 +53,7 @@
 <style scoped>
 #footer{
   display: flex;
-  margin-top: 30px;
+  margin-top: 50px;
   width: 100%;
   margin-left: 11%;
   margin-right: 11%;

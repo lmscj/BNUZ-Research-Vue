@@ -10,13 +10,18 @@ import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
 import VueCropper from 'vue-cropper'
+import VueLazyload from 'vue-lazyload'
 require('./mock/index.js')
 
 
 Vue.config.productionTip = false
 Vue.use(ElementUI);
 Vue.use(VueQuillEditor);
-Vue.use(VueCropper)
+Vue.use(VueCropper);
+Vue.use(VueLazyload ,{
+  error: 'dist/error.png',
+  // loading: 'https://img.lanrentuku.com/img/allimg/1212/5-121204193R0-50.gif',
+})
 
 Vue.prototype.$message = (options = {}) => {
   const { isSingle } = options

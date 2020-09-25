@@ -37,17 +37,19 @@
         </el-dropdown-menu>
       </el-dropdown>
     </div>
+    
     <el-dialog
+      class="dialog"
       title="备份还原"
-      width="40%"
+      width="30%"
       :visible.sync="dialogVisible"
       :modal="false"
       :close-on-click-modal="false"
     >
       <el-table
         :data="tableData"
-        style="width: 100%;font-size:16px;"
-        height="300px"
+        style="width: 100%;font-size:14px;color:#2b1216;"
+        height="250px"
         size="mini"
         v-loading="tableLoading"
         element-tableLoading-text="拼命加载中"
@@ -62,7 +64,7 @@
             <el-button
               @click="handleDelete(scope.row.id)"
               type="danger"
-              :disabled="scope.row.name=='系统默认备份'?true:false"
+              :disabled="scope.row.name=='系统默认备份'? true : false"
               size="mini"
             >删除</el-button>
           </template>
@@ -175,7 +177,7 @@ export default {
         this.$store.getters.role === 1 ||
         this.$store.getters.role === 2
       ) {
-        this.$router.push({ path: "/person" });
+        this.$router.push({ path: "/normal" });
       }
     },
     navigateToPre() {
@@ -188,7 +190,7 @@ export default {
         this.$store.getters.role === 1 ||
         this.$store.getters.role === 2
       ) {
-        this.$router.push({ path: "/person/pre-entry" });
+        this.$router.push({ path: "/normal/pre-entry" });
       }
     },
     navigateToPass() {
@@ -201,7 +203,7 @@ export default {
         this.$store.getters.role === 1 ||
         this.$store.getters.role === 2
       ) {
-        this.$router.push({ path: "/person/reset-pwd" });
+        this.$router.push({ path: "/normal/reset-pwd" });
       }
     },
     logout() {
@@ -254,8 +256,14 @@ export default {
 }
 .btn-backup {
     color: #FFF;
-    background-color: #14889A;
+    background-color: #21373d;
     border-color: #14889A;
+}
+.dialog {
+  opacity:0.9;
+  background:#6F7C84;
+  position: fixed;
+  color:#2b1216;
 }
 .left,
 .right {
@@ -271,12 +279,11 @@ export default {
 }
 .right button {
   border: 1px #5dd5c8 solid;
-  border-radius: 15px;
+  border-radius: 30px;
   background-color: inherit;
   color: white;
   letter-spacing: 1px;
-  padding: 0px 9px 0px 11px;
-  font-size: 13px;
+  padding: 0px 10px 0px 11px;
 }
 .right button:hover {
   color: #5dd5c8;

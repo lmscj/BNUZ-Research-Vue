@@ -65,7 +65,7 @@ export default {
       } else if (this.role === 8) {
         this.$router.push({ path: "/insitution-admin" });
       } else if (this.role === 0 || this.role === 1 || this.role === 2) {
-        this.$router.push({ path: "/person" });
+        this.$router.push({ path: "/normal" });
       }
     },
     logout() {
