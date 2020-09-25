@@ -55,7 +55,7 @@
     </el-dialog>
     <el-breadcrumb separator-class="el-icon-arrow-right"
     style="margin-top:2px">
-      <el-breadcrumb-item :to="{ path: '/person/home' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/normal/home' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>账号中心</el-breadcrumb-item>
       <el-breadcrumb-item>入驻审核</el-breadcrumb-item>
       <el-breadcrumb-item>{{form.name}}</el-breadcrumb-item>
@@ -540,12 +540,12 @@ export default {
                 message: "保存成功",
                 type: "success"
               });
-              this.$router.push({ path: "/person/settled"});
+              this.$router.push({ path: "/normal/settled"});
             } else {
               this.$alert("请耐心等待审核通过", "提交成功", {
                 confirmButtonText: "确定",
                 callback: () => {
-                  this.$router.push({ path: "/person/settled" });
+                  this.$router.push({ path: "/normal/settled" });
                 }
               });
             }

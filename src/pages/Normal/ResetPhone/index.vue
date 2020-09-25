@@ -4,7 +4,7 @@
       separator-class="el-icon-arrow-right"
       style="margin-top:2px"
     >
-      <el-breadcrumb-item :to="{ path: '/person' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/normal' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>账号中心</el-breadcrumb-item>
       <el-breadcrumb-item>修改手机号</el-breadcrumb-item>
     </el-breadcrumb>
@@ -135,7 +135,7 @@ export default {
     background: #fff;
   }
   &_form {
-    margin-top: 10%;
+    margin-top: 8%;
     margin-left: 25%;
     margin-bottom: 10%;
   }

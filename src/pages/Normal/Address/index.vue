@@ -4,7 +4,7 @@
       separator-class="el-icon-arrow-right"
       style="margin-top:2px"
     >
-      <el-breadcrumb-item :to="{ path: '/person' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/normal' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>账号中心</el-breadcrumb-item>
       <el-breadcrumb-item>修改联系地址</el-breadcrumb-item>
     </el-breadcrumb>

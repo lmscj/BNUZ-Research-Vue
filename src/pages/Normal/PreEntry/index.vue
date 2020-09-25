@@ -1,27 +1,13 @@
 <template>
-  <div class="alr-entry__container">
+  <div class="pre-entry__container">
     <el-breadcrumb separator-class="el-icon-arrow-right"
     style="margin-top:2px">
-      <el-breadcrumb-item :to="{ path: '/person/home' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/normal/home' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>课程中心</el-breadcrumb-item>
-      <el-breadcrumb-item>已报名课程</el-breadcrumb-item>
+      <el-breadcrumb-item>预报名课程</el-breadcrumb-item>
     </el-breadcrumb>
-    <div class="alr-entry__wrap">
-      <div class="alr-entry_header">
-        <el-dropdown @command="handleCommand">
-          <span class="el-dropdown-link">
-            <el-button type="primary" size="medium">
-              {{custom}}<i class="el-icon-arrow-down el-icon--right"></i>
-            </el-button>
-          </span>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item command="is_pay">已付款</el-dropdown-item>
-            <el-dropdown-item command="is_not_pay">未付款</el-dropdown-item>
-            <el-dropdown-item command="is_refund">已退款</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
-      </div>
-      <div class="alr-entry__table">
+    <div class="pre-entry__wrap">
+      <div class="pre-entry__table">
         <el-table
           v-loading="Loading"
           element-loading-text="数据加载中..."
@@ -70,17 +56,13 @@
             align="center"
             show-overflow-tooltip
           ></el-table-column>
-          <el-table-column
-            label="操作"
-            width="200"
-            align="center"
-          >
+          <el-table-column label="操作" width="200" align="center">
             <template slot-scope="scope">
               <el-button
                 size="mini"
                 type="primary"
-                @click="handleView(scope.row.id)"
-              >查看</el-button>
+                @click="handlePayFor(scope.row.id)"
+              >付款</el-button>
               <el-popover
                 placement="top"
                 width="160"
@@ -89,11 +71,7 @@
               >
                 <p>确认删除该课程吗？</p>
                 <div style="text-align: right; margin: 0;">
-                  <el-button
-                    size="mini"
-                    type="text"
-                    @click="closePopover(scope.$index)"
-                  >取消</el-button>
+                  <el-button size="mini" type="text" @click="closePopover(scope.$index)">取消</el-button>
                   <el-button
                     type="primary"
                     size="mini"
@@ -111,7 +89,7 @@
           </el-table-column>
         </el-table>
       </div>
-      <div class="alr-entry__pagination">
+      <div class="pre-entry__pagination">
         <div class="pagination__info">共{{totalTagsCount}}条记录，共{{totalPage}}页，当前显示第{{currentPage}}页</div>
         <el-pagination
           class="pagination__container"
@@ -132,7 +110,6 @@ export default {
   name: "PreEntry",
   data() {
     return {
-      custom: "",
       userId: "",
       Loading: true,
       searchValue: "",
@@ -141,9 +118,6 @@ export default {
       currentPage: 0,
       currentTableData: [],
       tableData: [],
-      is_pay : {},
-      is_not_pay : {},
-      is_refund : {},
       multipleSelection: []
     };
   },
@@ -153,43 +127,17 @@ export default {
   methods: {
     async getPreEntryList() {
       this.userId = this.$store.getters.userInfo.id;
+      console.log(this.userId);
+
       const { data: data } = await this.$http.get("/api/accounts/dashboard");
-      const { course_enroll } = data;
-      const { is_pay, is_not_pay, is_refund } = course_enroll;
-      console.log(course_enroll)
-      this.is_pay = is_pay;
-      this.is_not_pay = is_not_pay;
-      this.is_refund = is_refund;
-      this.currentTableData = is_pay;
-      this.totalTagsCount = is_pay.length;
-      this.totalPage = Math.ceil(is_pay.length / 10);
-      this.custom = "已付款"
+      const { course_pre_enroll } = data;
+      this.currentTableData = course_pre_enroll;
+      this.totalTagsCount = course_pre_enroll.length;
+      this.totalPage = Math.ceil(course_pre_enroll.length / 10);
       this.Loading = false;
+     
     },
-    generate(command){
-      const List = {
-        is_not_pay: "未付款",
-        is_pay: "已付款",
-        is_refund: "已退款",
-      };
-      return List[command];
-    },
-    handleCommand(command){
-      this.custom = this.generate(command)
-      if(command === "is_pay"){
-        this.currentTableData = this.is_pay;
-      }
-      else if(command === "is_not_pay"){
-        this.currentTableData = this.is_not_pay;
-      }
-      else{
-        this.currentTableData = this.is_refund;
-      }
-      this.totalTagsCount = this.currentTableData.length;
-      this.totalPage = Math.ceil(this.totalTagsCount / 10);
-      this.Loading = false;
-    },
-    handleView(){
+    handlePayFor(){
 
     },
     setCurrentTableData() {
@@ -229,13 +177,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.el-dropdown-link {
-  cursor: pointer;
-  color: #409eff;
-  font-size:14px!important
-}
-
-.alr-entry {
+.pre-entry {
   &__container {
     height: calc(100vh - 100px);
   }

@@ -4,7 +4,7 @@
       separator-class="el-icon-arrow-right"
       style="margin-top:2px"
     >
-      <el-breadcrumb-item :to="{ path: '/person' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/normal' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>账号中心</el-breadcrumb-item>
       <el-breadcrumb-item>基本资料</el-breadcrumb-item>
     </el-breadcrumb>
@@ -17,39 +17,39 @@
           :rules="rules"
         >
           <el-form-item
-            label="用户昵称"
+            label="昵 称"
             prop="nickname"
           >
             <el-input
               v-model="form.nickname"
-              style="margin-bottom:20px"
+              style="margin-bottom:10px"
             ></el-input>
           </el-form-item>
           <el-form-item
-            label="姓名"
+            label="姓 名"
             prop="name"
           >
             <el-input
               v-model="form.name"
-              style="margin-bottom:20px"
+              style="margin-bottom:10px"
             ></el-input>
           </el-form-item>
           <el-form-item
-            label="电话"
+            label="电 话"
             prop="phone"
           >
             <el-input
               v-model="form.phone"
-              style="margin-bottom:20px"
+              style="margin-bottom:10px"
             ></el-input>
           </el-form-item>
           <el-form-item
-            label="邮箱"
+            label="邮 箱"
             prop="email"
           >
             <el-input
               v-model="form.email"
-              style="margin-bottom:20px"
+              style="margin-bottom:10px"
             ></el-input>
           </el-form-item>
           <el-form-item>
@@ -66,24 +66,6 @@
         </el-form>
       </div>
       <div class="base-data_avatar">
-        <!-- <el-upload
-          class="base-data_avatar-uploader"
-          action="https://jsonplaceholder.typicode.com/posts/"
-          :show-file-list="false"
-          :http-request="handleAvatarUpload"
-          :before-upload="beforeAvatarUpload"
-        >
-          <img
-            v-if="imageUrl"
-            :src="imageUrl"
-            class="base-data_img-avatar"
-          >
-          
-          <i
-            v-else
-            class="el-icon-plus base-data_avatar-uploader-icon"
-          ></i>
-        </el-upload> -->
         <img
           v-if="imageUrl"
           :src="imageUrl"
@@ -273,7 +255,7 @@ export default {
     float: left;
     width: 40%;
     margin-left: 10%;
-    margin-top: 5%;
+    margin-top: 7%;
     text-align: center;
 
   }

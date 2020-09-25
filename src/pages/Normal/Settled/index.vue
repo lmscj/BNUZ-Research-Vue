@@ -2,7 +2,7 @@
   <div class="settled__container">
     <el-breadcrumb separator-class="el-icon-arrow-right"
     style="margin-top:2px">
-      <el-breadcrumb-item :to="{ path: '/person/home' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/normal/home' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>账号中心</el-breadcrumb-item>
       <el-breadcrumb-item>入驻审核</el-breadcrumb-item>
     </el-breadcrumb>
@@ -36,7 +36,7 @@
             <template slot-scope="scope">
               <router-link
                 class="router-link"
-                :to="`/person/settled/${scope.row.id}`"
+                :to="`/normal/settled/${scope.row.id}`"
               >{{scope.row.institution_details.name}}</router-link>
             </template>
           </el-table-column>
@@ -183,7 +183,7 @@ export default {
     },
     async handleEdit(id) {
        this.$router.push({
-        path: "/person/settled-modifty/" + id
+        path: "/normal/settled-modifty/" + id
       });       
     },
     setCurrentTableData() {
@@ -242,6 +242,7 @@ export default {
 <style lang="scss" scoped>
 .settled {
   &__container {
+    
     height: calc(100vh - 100px);
   }
 
@@ -263,7 +264,6 @@ export default {
     background: #fff;
 
     /deep/ .router-link {
-      // display: block;
       color: #606266;
       text-decoration: none;
       transition: color 0.3s ease;
