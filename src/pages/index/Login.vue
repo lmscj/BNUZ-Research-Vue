@@ -1,7 +1,7 @@
 <template>
   <div style="padding-top: 45px;">
     <el-row>
-      <el-col :span="11" :offset="1">
+      <el-col :span="12" >
         <div class="banner" style="margin-right: 0px;margin-left:20%;width:100%">
           <img src="../../assets/img/logo-banner.jpeg" alt style="height: 480px;min-width:800px" />
         </div>
@@ -27,22 +27,14 @@
                   type="password"
                 ></el-input>
               </el-form-item>
-              <el-form-item prop="code">
-                <el-row :span="24">
-                  <el-col :span="16" >
-                    <el-input placeholder="请输入验证码" v-model="form.code" type="text"></el-input>
-                  </el-col>
-                  <el-col :span="8">
-                    <div class="login-code" @click="refreshCode">
-                      <captcha-canvans :identifyCode="identifyCode" />
-                    </div>
-                  </el-col>
-                </el-row>
+
+              <el-form-item prop="confirm">
+                <drag-canvans ref="dragCanvans"></drag-canvans>
               </el-form-item>
               <el-form-item style="margin-top:-15px">
                 <el-checkbox class="auto-login">记住密码</el-checkbox>
                 <div style="float:right">
-                  <a href="javascript:;" style="padding: 1px 0px 0px 10px">忘记密码 ?</a>
+                  <a href="javascript:;">忘记密码 ?</a>
                 </div>
               </el-form-item>
               <div style="margin-top:-10px;display: flex;justify-content: center;font-size:14px">
@@ -84,18 +76,17 @@
 
 <script>
 import { login } from "@/api/user";
-import CaptchaCanvans from "@/components/Captcha/index";
+import DragCanvans from "@/components/Captcha/drag";
+
 export default {
   name: "Login",
   components: {
-    CaptchaCanvans,
+    DragCanvans,
   },
   data() {
-    const validateCode = (rule, value, callback) => {
-      if (this.identifyCode !== value) {
-        this.form.code = "";
-        this.refreshCode();
-        callback(new Error("请输入正确的验证码"));
+    const validateConfirm = (rule, value, callback) => {
+      if (!this.$refs.dragCanvans.confirmSuccess) {
+        callback(new Error("请拖动滑块完成验证！"));
       } else {
         callback();
       }
@@ -104,26 +95,28 @@ export default {
       form: {
         key: "",
         password: "",
-        code: "",
-        loginStatus : false
+
+        // code: "",
+        // loginStatus : false
       },
-      identifyCode: "",
-      identifyCodes: "1234567890",
+      dragShow : false,
+      // identifyCode: "",
+      // identifyCodes: "1234567890",
       loginRules: {
         key: [{ required: true, message: "请输入用户名", trigger: "blur" }],
         password: [{ required: true, message: "请输入密码", trigger: "blur" }],
-        code : [{validator: validateCode, trigger: 'blur'}],
+        confirm: [{ validator: validateConfirm, trigger: "blur" }],
       },
     };
   },
-  created() {
-    this.refreshCode();
-  },
-  watch: {
-    identifyCode(v) {
-      this.loginStatus && (this.loginForm.code = v);
-    },
-  },
+  // created() {
+  //   this.refreshCode();
+  // },
+  // watch: {
+  //   identifyCode(v) {
+  //     this.loginStatus && (this.loginForm.code = v);
+  //   },
+  // },
   methods: {
     login() {
       const loginInfo = {
@@ -137,36 +130,54 @@ export default {
       });
     },
     dispatchSubmit() {
-      this.loginStatus= true
-      this.$refs["form"].validate((valid) => {
-        if (valid) {
-          this.login();
-        } else {
-          this.$message({
-            showClose: true,
-            message: `   您的用户账号密码或验证码有误，请重新输入`,
-            type: "warring",
-            isSingle: true,
-          });
-          return false;
-        }
-      });
-      this.loginStatus = false
-    },
-    randomNum(min, max) {
-      return Math.floor(Math.random() * (max - min) + min);
-    },
-    refreshCode() {
-      this.identifyCode = "";
-      this.makeCode(this.identifyCodes, 4);
-    },
-    makeCode(o, l) {
-      for (let i = 0; i < l; i++) {
-        this.identifyCode += this.identifyCodes[
-          this.randomNum(0, this.identifyCodes.length)
-        ];
+      if (!this.$refs.dragCanvans.confirmSuccess) {
+        this.$message({
+          showClose: true,
+          message: `   请先完成滑动验证！`,
+          type: "warring",
+          isSingle: true,
+        });
+        this.refresh = false;
+        this.$nextTick(() => {
+          this.refresh = true;
+        });
+        // this.$refs.dragCanvans.refreshDrag()
+        return false;
+      } else {
+        this.$refs["form"].validate((valid) => {
+          if (valid) {
+            this.login();
+          } else {
+            this.$message({
+              showClose: true,
+              message: `   您的用户账号密码有误，请重新输入`,
+              type: "danger",
+              isSingle: true,
+            });
+            this.refresh = false;
+            this.$nextTick(() => {
+              this.refresh = true;
+            });
+            // this.$refs.dragCanvans.refreshDrag()
+            return false;
+          }
+        });
       }
     },
+    // randomNum(min, max) {
+    //   return Math.floor(Math.random() * (max - min) + min);
+    // },
+    // refreshCode() {
+    //   this.identifyCode = "";
+    //   this.makeCode(this.identifyCodes, 4);
+    // },
+    // makeCode(o, l) {
+    //   for (let i = 0; i < l; i++) {
+    //     this.identifyCode += this.identifyCodes[
+    //       this.randomNum(0, this.identifyCodes.length)
+    //     ];
+    //   }
+    // },
   },
 };
 </script>
@@ -192,30 +203,18 @@ export default {
 a {
   text-decoration: none;
 }
-a:link {
-  color: blue;
-}
-a:visited {
-  color: blue;
-}
-a:hover {
-  color: rgb(107, 0, 128);
-}
-a:active {
-  color: blue;
-}
+
+
 .auto-login {
   position: absolute;
   top: 0px;
   left: 2px;
-  
 }
 .other {
   width: auto;
   color: #bbb;
   font-size: 12px;
   cursor: default;
-  
 }
 .login-code {
   cursor: pointer;
